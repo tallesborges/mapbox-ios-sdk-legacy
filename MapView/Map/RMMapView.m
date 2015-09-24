@@ -940,8 +940,12 @@
             if (RMProjectedRectIsZero(_constrainingProjectedBounds))
                 RMLog(@"The constraining bounds from tilesources and user don't intersect!");
         }
-        else
-            _constrainingProjectedBounds = tileSourcesConstrainingProjectedBounds;
+        else {
+            if (_constrainingProjectedBounds.size.width == 0 && _constrainingProjectedBounds.size.height == 0) {
+                _constrainingProjectedBounds = tileSourcesConstrainingProjectedBounds;
+            }
+        }
+
     }
     else if (_constrainMovementByUser)
     {
@@ -1190,7 +1194,7 @@
 {
     if (self.userTrackingMode != RMUserTrackingModeNone && ! CGPointEqualToPoint(pivot, [self coordinateToPixel:self.userLocation.location.coordinate]))
         self.userTrackingMode = RMUserTrackingModeNone;
-    
+
     // Calculate rounded zoom
     float newZoom = fmin(ceilf([self zoom]) + 1.0, [self maxZoom]);
 
@@ -1496,7 +1500,7 @@
 
     if (self.userTrackingMode != RMUserTrackingModeNone && wasUserAction)
         self.userTrackingMode = RMUserTrackingModeNone;
-    
+
     [self correctPositionOfAllAnnotations];
 
     if (_zoom < 3 && self.userTrackingMode == RMUserTrackingModeFollowWithHeading)
@@ -3327,6 +3331,7 @@
 #endif
 
         _locationManager.headingFilter = 5.0;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
         _locationManager.delegate = self;
         [_locationManager startUpdatingLocation];
     }
@@ -3877,7 +3882,7 @@
 - (void)setViewControllerPresentingAttribution:(UIViewController *)viewController
 {
     _viewControllerPresentingAttribution = viewController;
-    
+
     if (_viewControllerPresentingAttribution && ! _attributionButton)
     {
         _attributionButton = [UIButton buttonWithType:UIButtonTypeInfoLight];

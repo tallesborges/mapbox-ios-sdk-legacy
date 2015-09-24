@@ -97,25 +97,25 @@
 - (id)initWithMapboxMarkerImage:(NSString *)symbolName tintColor:(UIColor *)color size:(RMMarkerMapboxImageSize)size
 {
     NSString *sizeString = nil;
-    
+
     switch (size)
     {
         case RMMarkerMapboxImageSizeSmall:
             sizeString = @"small";
             break;
-        
+
         case RMMarkerMapboxImageSizeMedium:
         default:
             sizeString = @"medium";
             break;
-        
+
         case RMMarkerMapboxImageSizeLarge:
             sizeString = @"large";
             break;
     }
-    
+
     NSString *colorHex = nil;
-    
+
     if (color)
     {
         CGFloat white, red, green, blue, alpha;
@@ -129,7 +129,7 @@
             colorHex = [NSString stringWithFormat:@"%02lx%02lx%02lx", (unsigned long)(white * 255), (unsigned long)(white * 255), (unsigned long)(white * 255)];
         }
     }
-    
+
     return [self initWithMapboxMarkerImage:symbolName tintColorHex:colorHex sizeString:sizeString];
 }
 
@@ -152,14 +152,14 @@
                                                [@"?access_token=" stringByAppendingString:[[RMConfiguration sharedInstance] accessToken]]]];
 
     UIImage *image = nil;
-    
+
     NSString *cachePath = [NSString stringWithFormat:@"%@/%@", kCachesPath, [imageURL lastPathComponent]];
-    
+
     if ((image = [UIImage imageWithData:[NSData dataWithContentsOfFile:cachePath] scale:(useRetina ? 2.0 : 1.0)]) && image)
         return [self initWithUIImage:image];
-    
+
     [[NSFileManager defaultManager] createFileAtPath:cachePath contents:[NSData brandedDataWithContentsOfURL:imageURL] attributes:nil];
-    
+
     return [self initWithUIImage:[UIImage imageWithData:[NSData dataWithContentsOfFile:cachePath] scale:(useRetina ? 2.0 : 1.0)]];
 }
 
@@ -238,7 +238,12 @@
 - (void)changeLabelUsingText:(NSString *)text position:(CGPoint)position font:(UIFont *)font foregroundColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor
 {
     CGSize textSize = [text sizeWithFont:font];
-    CGRect frame = CGRectMake(position.x, position.y, textSize.width+4, textSize.height+4);
+    CGFloat width = textSize.width+4;
+    CGFloat height = textSize.height+4;
+
+    float size = (width > height) ? width : height;
+
+    CGRect frame = CGRectMake(position.x, position.y, size, size);
 
     UILabel *aLabel = [[UILabel alloc] initWithFrame:frame];
     [self setTextForegroundColor:textColor];
@@ -250,6 +255,12 @@
     [aLabel setFont:font];
     [aLabel setTextAlignment:NSTextAlignmentCenter];
     [aLabel setText:text];
+
+    [aLabel setBackgroundColor:[UIColor clearColor]];
+    aLabel.layer.backgroundColor = [UIColor redColor].CGColor;
+    aLabel.layer.cornerRadius = size / 2;
+    aLabel.layer.masksToBounds = NO;
+    aLabel.layer.shouldRasterize = YES;
 
     [self setLabel:aLabel];
 }

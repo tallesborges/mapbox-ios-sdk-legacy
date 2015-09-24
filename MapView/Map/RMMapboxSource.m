@@ -4,21 +4,21 @@
 //  Created by Justin R. Miller on 5/17/11.
 //  Copyright 2012-2013 Mapbox.
 //  All rights reserved.
-//  
+//
 //  Redistribution and use in source and binary forms, with or without
 //  modification, are permitted provided that the following conditions are met:
-//  
+//
 //      * Redistributions of source code must retain the above copyright
 //        notice, this list of conditions and the following disclaimer.
-//  
+//
 //      * Redistributions in binary form must reproduce the above copyright
 //        notice, this list of conditions and the following disclaimer in the
 //        documentation and/or other materials provided with the distribution.
-//  
+//
 //      * Neither the name of Mapbox, nor the names of its contributors may be
 //        used to endorse or promote products derived from this software
 //        without specific prior written permission.
-//  
+//
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 //  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -89,7 +89,7 @@
             ([RMMapboxSource isUsingLargeTiles] ? @"-512" : @"")];
 
         id dataObject = nil;
-        
+
         if (mapView && (dataObject = _infoDictionary[@"data"]) && dataObject)
         {
             dispatch_async(_dataQueue, ^(void)
@@ -97,9 +97,9 @@
                 if ([dataObject isKindOfClass:[NSArray class]] && [[dataObject objectAtIndex:0] isKindOfClass:[NSString class]])
                 {
                     NSURL *dataURL = [NSURL URLWithString:[dataObject objectAtIndex:0]];
-                    
+
                     NSMutableString *jsonString = nil;
-                    
+
                     if (dataURL && (jsonString = [NSMutableString brandedStringWithContentsOfURL:dataURL encoding:NSUTF8StringEncoding error:nil]) && jsonString)
                     {
                         if ([jsonString hasPrefix:@"grid("])
@@ -107,9 +107,9 @@
                             [jsonString replaceCharactersInRange:NSMakeRange(0, 5)                       withString:@""];
                             [jsonString replaceCharactersInRange:NSMakeRange([jsonString length] - 2, 2) withString:@""];
                         }
-                        
+
                         id jsonObject = nil;
-                        
+
                         if ((jsonObject = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]) && [jsonObject isKindOfClass:[NSDictionary class]])
                         {
                             for (NSDictionary *feature in jsonObject[@"features"])
@@ -141,10 +141,10 @@
                         }
                     }
                 }
-            });            
+            });
         }
     }
-    
+
     return self;
 }
 
@@ -156,7 +156,7 @@
 - (id)initWithReferenceURL:(NSURL *)referenceURL enablingDataOnMapView:(RMMapView *)mapView
 {
     id dataObject = nil;
-    
+
     if ([[referenceURL pathExtension] isEqualToString:@"jsonp"])
     {
         referenceURL = [NSURL URLWithString:[[referenceURL absoluteString] stringByReplacingOccurrencesOfString:@".jsonp"
@@ -195,7 +195,7 @@
 #endif
 }
 
-#pragma mark 
+#pragma mark
 
 - (NSURL *)canonicalURLForMapID:(NSString *)mapID
 {
@@ -336,7 +336,7 @@
     RMSphericalTrapezium ownBounds     = [self latitudeLongitudeBoundingBox];
     RMSphericalTrapezium defaultBounds = kMapboxDefaultLatLonBoundingBox;
 
-    if (ownBounds.southWest.longitude <= defaultBounds.southWest.longitude + 10 && 
+    if (ownBounds.southWest.longitude <= defaultBounds.southWest.longitude + 10 &&
         ownBounds.northEast.longitude >= defaultBounds.northEast.longitude - 10)
         return YES;
 
@@ -355,7 +355,7 @@
         return CLLocationCoordinate2DMake([self.infoDictionary[@"center"][1] doubleValue],
                                           [self.infoDictionary[@"center"][0] doubleValue]);
     }
-    
+
     return CLLocationCoordinate2DMake(0, 0);
 }
 
@@ -365,13 +365,14 @@
     {
         return [self.infoDictionary[@"center"][2] floatValue];
     }
-    
+
     return roundf(([self maxZoom] + [self minZoom]) / 2);
 }
 
 + (BOOL)isUsingLargeTiles
 {
-    return ([[UIScreen mainScreen] scale] > 1.0);
+//    return ([[UIScreen mainScreen] scale] > 1.0);
+    return NO;
 }
 
 - (NSString *)uniqueTilecacheKey
