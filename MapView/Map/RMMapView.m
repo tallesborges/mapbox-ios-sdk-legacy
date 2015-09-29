@@ -924,6 +924,14 @@
     _constrainingProjectedBoundsByUser = RMProjectedRectMake(southWest.x, southWest.y, northEast.x - southWest.x, northEast.y - southWest.y);
 }
 
+-(void) setConstrainsProjectBounds:(RMProjectedRect)rect {
+    _constrainingProjectedBounds = rect;
+}
+
+-(RMProjectedRect) constrainsProjectBounds {
+    return _constrainingProjectedBounds;
+}
+
 - (void)setTileSourcesConstraintsFromLatitudeLongitudeBoundingBox:(RMSphericalTrapezium)bounds
 {
     BOOL tileSourcesConstrainMovement = !(bounds.northEast.latitude == 90.0 && bounds.northEast.longitude == 180.0 && bounds.southWest.latitude == -90.0 && bounds.southWest.longitude == -180.0);

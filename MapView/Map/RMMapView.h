@@ -125,7 +125,7 @@ typedef enum : NSUInteger {
 /** A custom, static view to use behind the map tiles. The default behavior is to use grid imagery that moves with map panning like MapKit. */
 @property (nonatomic, strong) UIView *backgroundView;
 
-/** A custom image to use behind the map tiles. The default behavior is to show the default `backgroundView` and not a static image. 
+/** A custom image to use behind the map tiles. The default behavior is to show the default `backgroundView` and not a static image.
 *
 *   @param backgroundImage The image to use. */
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
@@ -140,26 +140,26 @@ typedef enum : NSUInteger {
 
 /** @name Initializing a Map View */
 
-/** Initialize a map view with a given frame. A default watermarked Mapbox map tile source will be used. 
+/** Initialize a map view with a given frame. A default watermarked Mapbox map tile source will be used.
 *
-*   @param frame The frame with which to initialize the map view. 
+*   @param frame The frame with which to initialize the map view.
 *   @return An initialized map view, or `nil` if the map view was unable to be initialized. */
 - (id)initWithFrame:(CGRect)frame;
 
-/** Initialize a map view with a given frame and tile source. 
-*   @param frame The frame with which to initialize the map view. 
-*   @param newTilesource The tile source to use for the map tiles. 
+/** Initialize a map view with a given frame and tile source.
+*   @param frame The frame with which to initialize the map view.
+*   @param newTilesource The tile source to use for the map tiles.
 *   @return An initialized map view, or `nil` if the map view was unable to be initialized. */
 - (id)initWithFrame:(CGRect)frame andTilesource:(id <RMTileSource>)newTilesource;
 
-/** Designated initializer. Initialize a map view. 
-*   @param frame The map view's frame. 
-*   @param newTilesource A tile source to use for the map tiles. 
+/** Designated initializer. Initialize a map view.
+*   @param frame The map view's frame.
+*   @param newTilesource A tile source to use for the map tiles.
 *   @param initialCenterCoordinate The starting map center coordinate.
 *   @param initialTileSourceZoomLevel The starting map zoom level, clamped to the zoom levels supported by the tile source(s).
 *   @param initialTileSourceMaxZoomLevel The maximum zoom level allowed by the map view, clamped to the zoom levels supported by the tile source(s).
 *   @param initialTileSourceMinZoomLevel The minimum zoom level allowed by the map view, clamped to the zoom levels supported by the tile source(s).
-*   @param backgroundImage A custom background image to use behind the map instead of the default gridded tile background that moves with the map. 
+*   @param backgroundImage A custom background image to use behind the map instead of the default gridded tile background that moves with the map.
 *   @return An initialized map view, or `nil` if a map view was unable to be initialized. */
 - (id)initWithFrame:(CGRect)frame
       andTilesource:(id <RMTileSource>)newTilesource
@@ -184,17 +184,17 @@ typedef enum : NSUInteger {
 /** The center point of the map represented as a projected point. */
 @property (nonatomic, assign) RMProjectedPoint centerProjectedPoint;
 
-/** Set the map center to a given coordinate. 
-*   @param coordinate A coordinate to set as the map center. 
+/** Set the map center to a given coordinate.
+*   @param coordinate A coordinate to set as the map center.
 *   @param animated Whether to animate the change to the map center. */
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated;
 
-/** Set the map center to a given projected point. 
-*   @param aPoint A projected point to set as the map center. 
+/** Set the map center to a given projected point.
+*   @param aPoint A projected point to set as the map center.
 *   @param animated Whether to animate the change to the map center. */
 - (void)setCenterProjectedPoint:(RMProjectedPoint)aPoint animated:(BOOL)animated;
 
-/** Move the map center by a given delta. 
+/** Move the map center by a given delta.
 *   @param delta A `CGSize` by which to move the map center. */
 - (void)moveBy:(CGSize)delta;
 
@@ -224,25 +224,25 @@ typedef enum : NSUInteger {
 // recenter the map on #boundsRect, expressed in projected meters
 - (void)setProjectedBounds:(RMProjectedRect)boundsRect animated:(BOOL)animated;
 
-/** Set zoom level, optionally with an animation. 
+/** Set zoom level, optionally with an animation.
 *   @param newZoom The desired zoom level.
 *   @param animated Whether to animate the map change. */
 - (void)setZoom:(float)newZoom animated:(BOOL)animated;
 
-/** Set both zoom level and center coordinate at the same time, optionally with an animation. 
-*   @param newZoom The desired zoom level. 
-*   @param newCenter The desired center coordinate. 
+/** Set both zoom level and center coordinate at the same time, optionally with an animation.
+*   @param newZoom The desired zoom level.
+*   @param newCenter The desired center coordinate.
 *   @param animated Whether to animate the map change. */
 - (void)setZoom:(float)newZoom atCoordinate:(CLLocationCoordinate2D)newCenter animated:(BOOL)animated;
 
-/** Zoom the map by a given factor near a certain point. 
-*   @param zoomFactor The factor by which to zoom the map. 
-*   @param center The point at which to zoom the map. 
+/** Zoom the map by a given factor near a certain point.
+*   @param zoomFactor The factor by which to zoom the map.
+*   @param center The point at which to zoom the map.
 *   @param animated Whether to animate the zoom. */
 - (void)zoomByFactor:(float)zoomFactor near:(CGPoint)center animated:(BOOL)animated;
 
-/** Zoom the map in at the next integral zoom level near a certain point. 
-*   @param pivot The point at which to zoom the map. 
+/** Zoom the map in at the next integral zoom level near a certain point.
+*   @param pivot The point at which to zoom the map.
 *   @param animated Whether to animate the zoom. */
 - (void)zoomInToNextNativeZoomAt:(CGPoint)pivot animated:(BOOL)animated;
 
@@ -251,9 +251,9 @@ typedef enum : NSUInteger {
 *   @param animated Whether to animate the zoom. */
 - (void)zoomOutToNextNativeZoomAt:(CGPoint)pivot animated:(BOOL)animated;
 
-/** Zoom the map to a given latitude and longitude bounds. 
-*   @param southWest The southwest point to zoom to. 
-*   @param northEast The northeast point to zoom to. 
+/** Zoom the map to a given latitude and longitude bounds.
+*   @param southWest The southwest point to zoom to.
+*   @param northEast The northeast point to zoom to.
 *   @param animated Whether to animate the zoom. */
 - (void)zoomWithLatitudeLongitudeBoundsSouthWest:(CLLocationCoordinate2D)southWest northEast:(CLLocationCoordinate2D)northEast animated:(BOOL)animated;
 
@@ -269,7 +269,7 @@ typedef enum : NSUInteger {
 /** The smallest bounding box containing the entire map view. */
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox;
 
-/** The smallest bounding box containing a rectangular region of the map view. 
+/** The smallest bounding box containing a rectangular region of the map view.
 *   @param rect A rectangular region. */
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBoxFor:(CGRect) rect;
 
@@ -284,18 +284,22 @@ typedef enum : NSUInteger {
 
 - (void)setProjectedConstraintsSouthWest:(RMProjectedPoint)southWest northEast:(RMProjectedPoint)northEast;
 
+- (void)setConstrainsProjectBounds:(RMProjectedRect)rect;
+
+- (RMProjectedRect)constrainsProjectBounds;
+
 #pragma mark - Snapshots
 
 /** @name Capturing Snapshots of the Map View */
 
-/** Take a snapshot of the map view. 
+/** Take a snapshot of the map view.
 *
 *   By default, the overlay containing any visible annotations is also captured.
 *   @return An image depicting the map view. */
 - (UIImage *)takeSnapshot;
 
-/** Take a snapshot of the map view. 
-*   @param includeOverlay Whether to include the overlay containing any visible annotations. 
+/** Take a snapshot of the map view.
+*   @param includeOverlay Whether to include the overlay containing any visible annotations.
 *   @return An image depicting the map view. */
 - (UIImage *)takeSnapshotAndIncludeOverlay:(BOOL)includeOverlay;
 
@@ -309,26 +313,26 @@ typedef enum : NSUInteger {
 /** The annotations currently visible on the map. May include annotations currently shown in clusters. */
 @property (nonatomic, weak, readonly) NSArray *visibleAnnotations;
 
-/** Add an annotation to the map. 
+/** Add an annotation to the map.
 *   @param annotation The annotation to add. */
 - (void)addAnnotation:(RMAnnotation *)annotation;
 
-/** Add one or more annotations to the map. 
+/** Add one or more annotations to the map.
 *   @param annotations An array containing the annotations to add to the map. */
 - (void)addAnnotations:(NSArray *)annotations;
 
-/** Remove an annotation from the map. 
+/** Remove an annotation from the map.
 *   @param annotation The annotation to remove. */
 - (void)removeAnnotation:(RMAnnotation *)annotation;
 
-/** Remove one or more annotations from the map. 
+/** Remove one or more annotations from the map.
 *   @param annotations An array containing the annotations to remove from the map. */
 - (void)removeAnnotations:(NSArray *)annotations;
 
 /** Remove all annotations from the map. This does not remove user location annotations, if any. */
 - (void)removeAllAnnotations;
 
-/** The relative map position for a given annotation. 
+/** The relative map position for a given annotation.
 *   @param annotation The annotation for which to return the current position.
 *   @return The screen position of the annotation. */
 - (CGPoint)mapPositionForAnnotation:(RMAnnotation *)annotation;
@@ -357,7 +361,7 @@ typedef enum : NSUInteger {
 /** Whether to enable clustering of map point annotations. Defaults to `NO`. */
 @property (nonatomic, assign) BOOL clusteringEnabled;
 
-/** Whether to order markers on the z-axis according to increasing y-position. Defaults to `YES`. 
+/** Whether to order markers on the z-axis according to increasing y-position. Defaults to `YES`.
 *
 *   @warning This property has been deprecated in favor of [RMMapViewDelegate annotationSortingComparatorForMapView:]. */
 @property (nonatomic, assign) BOOL orderMarkersByYPosition DEPRECATED_MSG_ATTRIBUTE("use -[RMMapViewDelegate annotationSortingComparatorForMapView:] for annotation sorting");
@@ -365,7 +369,7 @@ typedef enum : NSUInteger {
 /** Whether to position cluster markers at the weighted center of the points they represent. If `YES`, position clusters in weighted fashion. If `NO`, position them on a rectangular grid. Defaults to `YES`. */
 @property (nonatomic, assign) BOOL positionClusterMarkersAtTheGravityCenter;
 
-/** Whether to order cluster markers above non-clustered markers. Defaults to `YES`. 
+/** Whether to order cluster markers above non-clustered markers. Defaults to `YES`.
 *
 *   @warning This property has been deprecated in favor of [RMMapViewDelegate annotationSortingComparatorForMapView:]. */
 @property (nonatomic, assign) BOOL orderClusterMarkersAboveOthers DEPRECATED_MSG_ATTRIBUTE("use -[RMMapViewDelegate annotationSortingComparatorForMapView:] for annotation sorting");
@@ -383,34 +387,34 @@ typedef enum : NSUInteger {
 /** All of the tile sources for a map view, ordered bottom to top. */
 @property (nonatomic, strong) NSArray *tileSources;
 
-/** Add a tile source to a map view above the current tile sources. 
+/** Add a tile source to a map view above the current tile sources.
 *   @param tileSource The tile source to add. */
 - (void)addTileSource:(id <RMTileSource>)tileSource;
 
-/** Add a tile source to a map view at a given index. 
-*   @param tileSource The tile source to add. 
+/** Add a tile source to a map view at a given index.
+*   @param tileSource The tile source to add.
 *   @param index The index at which to add the tile source. A value of zero adds the tile source below all other tile sources. */
 - (void)addTileSource:(id<RMTileSource>)tileSource atIndex:(NSUInteger)index;
 
-/** Remove a tile source from the map view. 
+/** Remove a tile source from the map view.
 *   @param tileSource The tile source to remove. */
 - (void)removeTileSource:(id <RMTileSource>)tileSource;
 
-/** Remove the tile source at a given index from the map view. 
+/** Remove the tile source at a given index from the map view.
 *   @param index The index of the tile source to remove. */
 - (void)removeTileSourceAtIndex:(NSUInteger)index;
 
-/** Move the tile source at one index to another index. 
-*   @param fromIndex The index of the tile source to move. 
+/** Move the tile source at one index to another index.
+*   @param fromIndex The index of the tile source to move.
 *   @param toIndex The destination index for the tile source. */
 - (void)moveTileSourceAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex;
 
-/** Hide or show a tile source. 
-*   @param isHidden A Boolean indicating whether to hide the tile source or not. 
+/** Hide or show a tile source.
+*   @param isHidden A Boolean indicating whether to hide the tile source or not.
 *   @param tileSource The tile source to hide or show. */
 - (void)setHidden:(BOOL)isHidden forTileSource:(id <RMTileSource>)tileSource;
 
-/** Hide or show a tile source at a given index. 
+/** Hide or show a tile source at a given index.
 *   @param isHidden A Boolean indicating whether to hide the tile source or not.
 *   @param index The index of the tile source to hide or show. */
 - (void)setHidden:(BOOL)isHidden forTileSourceAtIndex:(NSUInteger)index;
@@ -425,11 +429,11 @@ typedef enum : NSUInteger {
 *   @param index The index of the tile source to change. */
 - (void)setAlpha:(CGFloat)alpha forTileSourceAtIndex:(NSUInteger)index;
 
-/** Reload the tiles for a given tile source. 
+/** Reload the tiles for a given tile source.
 *   @param tileSource The tile source to reload. */
 - (void)reloadTileSource:(id <RMTileSource>)tileSource;
 
-/** Reload the tiles for a tile source at a given index. 
+/** Reload the tiles for a tile source at a given index.
 *   @param index The index of the tile source to reload. */
 - (void)reloadTileSourceAtIndex:(NSUInteger)index;
 
@@ -451,33 +455,33 @@ typedef enum : NSUInteger {
 
 /** @name Converting Map Coordinates */
 
-/** Convert a projected point to a screen location. 
-*   @param projectedPoint The projected point to convert. 
+/** Convert a projected point to a screen location.
+*   @param projectedPoint The projected point to convert.
 *   @return The equivalent screen location. */
 - (CGPoint)projectedPointToPixel:(RMProjectedPoint)projectedPoint;
 
-/** Convert a coordinate to a screen location. 
-*   @param coordinate The coordinate to convert. 
+/** Convert a coordinate to a screen location.
+*   @param coordinate The coordinate to convert.
 *   @return The equivalent screen location. */
 - (CGPoint)coordinateToPixel:(CLLocationCoordinate2D)coordinate;
 
-/** Convert a screen location to a projected point. 
+/** Convert a screen location to a projected point.
 *   @param pixelCoordinate A screen location to convert.
 *   @return The equivalent projected point. */
 - (RMProjectedPoint)pixelToProjectedPoint:(CGPoint)pixelCoordinate;
 
 /** Convert a screen location to a coordinate.
-*   @param pixelCoordinate A screen location to convert. 
+*   @param pixelCoordinate A screen location to convert.
 *   @return The equivalent coordinate. */
 - (CLLocationCoordinate2D)pixelToCoordinate:(CGPoint)pixelCoordinate;
 
-/** Convert a coordiante to a projected point. 
-*   @param coordinate A coordinate to convert. 
+/** Convert a coordiante to a projected point.
+*   @param coordinate A coordinate to convert.
 *   @return The equivalent projected point. */
 - (RMProjectedPoint)coordinateToProjectedPoint:(CLLocationCoordinate2D)coordinate;
 
-/** Convert a projected point to a coordinate. 
-*   @param projectedPoint A projected point to convert. 
+/** Convert a projected point to a coordinate.
+*   @param projectedPoint A projected point to convert.
 *   @return The equivalent coordinate. */
 - (CLLocationCoordinate2D)projectedPointToCoordinate:(RMProjectedPoint)projectedPoint;
 
@@ -487,8 +491,8 @@ typedef enum : NSUInteger {
 - (CLLocationCoordinate2D)normalizeCoordinate:(CLLocationCoordinate2D)coordinate;
 - (RMTile)tileWithCoordinate:(CLLocationCoordinate2D)coordinate andZoom:(int)zoom;
 
-/** Return the bounding box for a given map tile. 
-*   @param aTile A map tile. 
+/** Return the bounding box for a given map tile.
+*   @param aTile A map tile.
 *   @return The bounding box for the tile in the current projection. */
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBoxForTile:(RMTile)aTile;
 
@@ -501,7 +505,7 @@ typedef enum : NSUInteger {
 *
 *   This property does not indicate whether the user’s position is actually visible on the map, only whether the map view is allowed to display it. To determine whether the user’s position is visible, use the userLocationVisible property. The default value of this property is `NO`.
 *
-*   Setting this property to `YES` causes the map view to use the Core Location framework to find the current location. As long as this property is `YES`, the map view continues to track the user’s location and update it periodically. 
+*   Setting this property to `YES` causes the map view to use the Core Location framework to find the current location. As long as this property is `YES`, the map view continues to track the user’s location and update it periodically.
 *
 *   On iOS 8 and above, your app must specify a value for `NSLocationWhenInUseUsageDescription` in its `Info.plist` to satisfy the requirements of the underlying Core Location framework when enabling this property. */
 @property (nonatomic, assign) BOOL showsUserLocation;
@@ -522,13 +526,13 @@ typedef enum : NSUInteger {
 /** Whether the map view should display a heading calibration alert when necessary. The default value is `YES`. */
 @property (nonatomic, assign) BOOL displayHeadingCalibration;
 
-/** Set the mode used to track the user location. 
+/** Set the mode used to track the user location.
 *
 *   Setting the tracking mode to `RMUserTrackingModeFollow` or `RMUserTrackingModeFollowWithHeading` causes the map view to center the map on that location and begin tracking the user’s location. If the map is zoomed out, the map view automatically zooms in on the user’s location, effectively changing the current visible region.
 *
 *   On iOS 8 and above, your app must specify a value for `NSLocationWhenInUseUsageDescription` in its `Info.plist` to satisfy the requirements of the underlying Core Location framework when tracking the user location.
 *
-*   @param mode The mode used to track the user location. 
+*   @param mode The mode used to track the user location.
 *   @param animated Whether changes to the map center or rotation should be animated when the mode is changed. */
 - (void)setUserTrackingMode:(RMUserTrackingMode)mode animated:(BOOL)animated;
 
