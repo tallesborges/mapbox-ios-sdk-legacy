@@ -122,6 +122,9 @@
 
 - (void)setPosition:(CGPoint)aPosition animated:(BOOL)animated
 {
+    if(isnan(aPosition.x) || isnan(aPosition.y)){
+        return;
+    }
     position = aPosition;
 
     if (layer)

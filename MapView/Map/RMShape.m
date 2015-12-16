@@ -601,6 +601,9 @@
 
 - (void)setPosition:(CGPoint)newPosition animated:(BOOL)animated
 {
+    if(isnan(newPosition.x) || isnan(newPosition.y)){
+        return;
+    }
     if (CGPointEqualToPoint(newPosition, super.position) && CGRectEqualToRect(self.bounds, previousBounds))
         return;
 
