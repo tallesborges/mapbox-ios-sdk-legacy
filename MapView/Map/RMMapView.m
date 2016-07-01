@@ -142,6 +142,7 @@
     BOOL _delegateHasSingleTapTwoFingersOnMap;
     BOOL _delegateHasLongPressOnMap;
     BOOL _delegateHasTapOnAnnotation;
+    BOOL _delegateHasTapOnAnnotations;
     BOOL _delegateHasDoubleTapOnAnnotation;
     BOOL _delegateHasLongPressOnAnnotation;
     BOOL _delegateHasTapOnCalloutAccessoryControlForAnnotation;
@@ -659,6 +660,7 @@
     _delegateHasLongPressOnMap = [_delegate respondsToSelector:@selector(longPressOnMap:at:)];
 
     _delegateHasTapOnAnnotation = [_delegate respondsToSelector:@selector(tapOnAnnotation:onMap:)];
+    _delegateHasTapOnAnnotations = [_delegate respondsToSelector:@selector(tapOnAnnotations:onMap:)];
     _delegateHasDoubleTapOnAnnotation = [_delegate respondsToSelector:@selector(doubleTapOnAnnotation:onMap:)];
     _delegateHasLongPressOnAnnotation = [_delegate respondsToSelector:@selector(longPressOnAnnotation:onMap:)];
     _delegateHasTapOnCalloutAccessoryControlForAnnotation = [_delegate respondsToSelector:@selector(tapOnCalloutAccessoryControl:forAnnotation:onMap:)];
@@ -1549,7 +1551,13 @@
 }
 
 - (void)handleSingleTap:(UIGestureRecognizer *)recognizer {
-    CALayer *hit = [_overlayView overlayHitTest:[recognizer locationInView:self]];
+    NSArray<CALayer *> *hitsTest = [_overlayView overlaysHitTest:[recognizer locationInView:self]];
+
+    CALayer *hit;
+
+    if (hitsTest.count > 0) {
+        hit = hitsTest[0];
+    }
 
     if (_currentAnnotation && ![hit isEqual:_currentAnnotation.layer]) {
         [self deselectAnnotation:_currentAnnotation animated:(![hit isKindOfClass:[RMMarker class]])];
@@ -1562,8 +1570,21 @@
 
     CALayer *superlayer = [hit superlayer];
 
+    NSArray<CALayer *> *arrayMapLayers = [hitsTest filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return [evaluatedObject isKindOfClass:[RMMapLayer class]];
+    }]];
+    
     // See if tap was on an annotation layer or marker label and send delegate protocol method
-    if ([hit isKindOfClass:[RMMapLayer class]]) {
+    if (arrayMapLayers.count > 1){
+        NSMutableArray *annotations = [NSMutableArray new];
+        for (CALayer *caLayer in arrayMapLayers) {
+            RMMapLayer *mapLayer = (RMMapLayer *) caLayer;
+            RMAnnotation *annotation = [mapLayer annotation];
+            [annotations addObject:annotation];
+        }
+        [self tapOnAnnotations:annotations atPoint:[recognizer locationInView:self]];
+    }
+    else if ([hit isKindOfClass:[RMMapLayer class]]) {
         [self tapOnAnnotation:[((RMMapLayer *) hit) annotation] atPoint:[recognizer locationInView:self]];
     }
     else if (superlayer != nil && [superlayer isKindOfClass:[RMMarker class]]) {
@@ -1742,6 +1763,12 @@
     else {
         if (_delegateHasSingleTapOnMap)
             [_delegate singleTapOnMap:self at:aPoint];
+    }
+}
+
+-(void) tapOnAnnotations:(NSArray<RMAnnotation *> *)annotations atPoint:(CGPoint)aPoint {
+    if (_delegateHasTapOnAnnotations) {
+        [_delegate tapOnAnnotations:annotations onMap:self];
     }
 }
 

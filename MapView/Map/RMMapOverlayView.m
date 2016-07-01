@@ -110,4 +110,44 @@
     return hit;
 }
 
+- (NSArray<CALayer *> *) overlaysHitTest:(CGPoint)point
+{
+    RMMapView *mapView = ((RMMapView *)self.superview);
+
+    // Here we be sure to hide disabled but visible annotations' layers to
+    // avoid touch events, then re-enable them after scoring the hit. We
+    // also show the user location if enabled and we're in tracking mode,
+    // since its layer is hidden and we want a possible hit. 
+    //
+    NSPredicate *annotationPredicate = [NSPredicate predicateWithFormat:@"SELF.enabled = NO AND SELF.layer != %@ AND SELF.layer.isHidden = NO", [NSNull null]];
+
+    NSArray *disabledVisibleAnnotations = [mapView.annotations filteredArrayUsingPredicate:annotationPredicate];
+
+    for (RMAnnotation *annotation in disabledVisibleAnnotations)
+        annotation.layer.hidden = YES;
+
+    if (mapView.userLocation.enabled && mapView.userTrackingMode == RMUserTrackingModeFollowWithHeading)
+        mapView.userLocation.layer.hidden = NO;
+
+
+    NSMutableArray <CALayer *> *result = [NSMutableArray new];
+
+    NSArray<CALayer *> *sublayers = self.layer.sublayers;
+
+    for (CALayer *subLayer in sublayers) {
+        CALayer *layer = [subLayer hitTest:point];
+        if (layer) {
+            [result addObject:layer];
+        }
+    }
+
+    if (mapView.userLocation.enabled && mapView.userTrackingMode == RMUserTrackingModeFollowWithHeading)
+        mapView.userLocation.layer.hidden = YES;
+
+    for (RMAnnotation *annotation in disabledVisibleAnnotations)
+        annotation.layer.hidden = NO;
+
+    return result;
+}
+
 @end
