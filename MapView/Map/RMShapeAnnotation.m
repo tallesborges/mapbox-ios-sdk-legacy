@@ -51,6 +51,12 @@
     return self;
 }
 
+- (void)setPoints:(NSArray *)points {
+    _points = [points copy];
+    [self setBoundingBoxFromLocations:points];
+    [self setLayer:nil];
+}
+
 - (void)setLineColor:(UIColor *)lineColor
 {
     [(RMShape *)[self layer] setLineColor:lineColor];
